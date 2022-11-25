@@ -5,10 +5,11 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { setPrevUrl } from 'src/redux/slices/urlSlice'
 
-export default function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
   const { cookies } = req
   const jwt = cookies.get('user')?.value
   const url = req.url
+  await cookies.set('prevUrl', url)
   // const dispatch = useDispatch()
   const loginUrl = req.nextUrl.clone()
   loginUrl.pathname = '/auth/login'
@@ -16,11 +17,13 @@ export default function middleware(req: NextRequest) {
   if (url.includes('/post/create')) {
     if (jwt === undefined) {
       // dispatch(setPrevUrl(url))
-      return NextResponse.redirect(loginUrl)
+      const loginRes = NextResponse.redirect(loginUrl)
+      loginRes.cookies.set('prevUrl', url)
+      return loginRes
     }
 
     try {
-      axios.get('http://localhost:3000/auth/check', {
+      axios.get('http://localhost:3000/auth/get-user', {
         headers: {
           authorization: jwt,
         },
@@ -28,7 +31,9 @@ export default function middleware(req: NextRequest) {
       return NextResponse.next()
     } catch (err) {
       // dispatch(setPrevUrl(url))
-      return NextResponse.redirect('/auth/login')
+      const loginRes = NextResponse.redirect(loginUrl)
+      loginRes.cookies.set('prevUrl', url)
+      return loginRes
     }
   }
 

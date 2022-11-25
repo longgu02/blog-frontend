@@ -18,7 +18,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from 'src/redux/store'
 
 export default function Login() {
-  const [cookie, setCookie] = useCookies(['user'])
+  const [cookie, setCookie, removeCookie] = useCookies(['user', 'prevUrl'])
+
   const prevUrl = useSelector((state: RootState) => state.url.prevUrl)
   const router = useRouter()
   const handleSignIn = (event: React.FormEvent<HTMLFormElement>) => {
@@ -39,8 +40,9 @@ export default function Login() {
           maxAge: 3600, // Expires after 1hr
           sameSite: true,
         })
-        const returnUrl = router.query.returnUrl || '/post'
-        return router.push(returnUrl.toString())
+        const prevUrl = cookie?.prevUrl
+        removeCookie('prevUrl')
+        return router.push(prevUrl || '/posts')
       })
       .catch(function (error) {
         console.error(error)
