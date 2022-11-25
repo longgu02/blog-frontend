@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import { SxProps, Theme } from '@mui/material'
+import { Dispatch, SetStateAction } from 'react'
 
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {
   ssr: false,
@@ -46,12 +46,19 @@ const formats = [
   'video',
 ]
 
-export default function QuillTextField(props: { style?: Object }) {
+export default function QuillTextField(props: {
+  style?: Object
+  value: string
+  setValue: Dispatch<SetStateAction<string>>
+}) {
   return (
     <QuillNoSSRWrapper
       modules={modules}
       formats={formats}
       theme="snow"
+      id="editor"
+      value={props.value}
+      onChange={props.setValue}
       style={props.style}
     />
   )

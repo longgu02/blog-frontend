@@ -81,7 +81,7 @@ export function getThemeConfig(): ThemeOptions {
       mode: 'light',
       background: {
         default: '#FFFFFF',
-        paper: '#00060D',
+        paper: '#FFFFFF',
         primary: '#FFFFFF',
         secondary: '#F5FCFF',
         third: '#00060D',
@@ -293,7 +293,7 @@ export function getThemeConfig(): ThemeOptions {
       // paper
       MuiPaper: {
         defaultProps: {
-          elevation: 0,
+          elevation: 1,
         },
         styleOverrides: {
           root: {

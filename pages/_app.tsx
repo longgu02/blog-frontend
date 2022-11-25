@@ -7,6 +7,9 @@ import { Meta } from '../src/components/Meta'
 import 'react-quill/dist/quill.snow.css'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { CookiesProvider } from 'react-cookie'
+import { store } from 'src/redux/store'
+import { Provider } from 'react-redux'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -24,7 +27,11 @@ export default function App({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Component {...pageProps} />
+          <CookiesProvider>
+            <Provider store={store}>
+              <Component {...pageProps} />
+            </Provider>
+          </CookiesProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </>
