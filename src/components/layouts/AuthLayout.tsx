@@ -1,4 +1,4 @@
-import { Box, Container, Paper } from '@mui/material'
+import { Paper } from '@mui/material'
 
 export default function AuthLayout(props: { children: React.ReactNode }) {
   return (
@@ -8,8 +8,8 @@ export default function AuthLayout(props: { children: React.ReactNode }) {
         left: '50%',
         top: '50%',
         transform: 'translate(-50%, -50%)',
-        backgroundColor: "#CDF0EA",
-        p: 2
+        backgroundColor: '#CDF0EA',
+        p: 2,
       }}
     >
       {props.children}

@@ -1,9 +1,7 @@
-import { Box } from '@mui/material'
+import { CircularProgress, Box } from '@mui/material'
 import axios from 'axios'
-import { redirect } from 'next/dist/server/api-utils'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { CircularProgress } from '@mui/material'
 
 export default function AuthorizationWrapper(props: {
   children: React.ReactNode

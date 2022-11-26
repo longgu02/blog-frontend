@@ -1,24 +1,9 @@
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import { Container } from '@mui/system'
 import PostPreview from 'src/components/Post/PostPreview'
-import PostLayout from '../../components/layouts/PostLayout'
 import NavigationBar from '../../components/NavigationBar'
+import { Post } from 'src/constant/interfaces'
 
-interface Post {
-  _id: string
-  title: string
-  slug: string
-  content: string
-  user: {
-    firstName: string
-    lastName: string
-  }
-  summary: string
-  published: boolean
-  createAt: Date
-  updateAt: Date
-  publishedAt: Date
-}
 
 export default function Post(props: { posts: { data: Array<Post> } }) {
   const { posts } = props

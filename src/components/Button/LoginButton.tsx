@@ -19,7 +19,6 @@ import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined'
 import { Avatar } from '@mui/material'
 import { stringAvatar } from 'src/utils/helper'
 import { useRouter } from 'next/router'
-import { NextRequest, NextResponse } from 'next/server'
 interface User {
   username: string
   firstName: string

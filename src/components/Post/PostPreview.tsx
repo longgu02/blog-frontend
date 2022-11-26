@@ -1,6 +1,4 @@
-import { Typography } from '@mui/material'
-import { Paper } from '@mui/material'
-import { Box } from '@mui/system'
+import { Typography, Paper, Box } from '@mui/material'
 import Image from 'next/image'
 
 interface Post {

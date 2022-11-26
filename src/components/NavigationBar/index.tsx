@@ -1,5 +1,4 @@
-import { Box, Button, Typography } from '@mui/material'
-import LoginButton from '../Button/LoginButton'
+import { Box, Typography } from '@mui/material'
 import NavigationButton from '../Button/NavigationButton'
 
 const NavigationItem = [

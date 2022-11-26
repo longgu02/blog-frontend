@@ -4,6 +4,7 @@ import PostLayout from '../../components/layouts/PostLayout'
 import NavigationBar from '../../components/NavigationBar'
 import axios from 'axios'
 import Parser from 'html-react-parser'
+import { Post } from 'src/constant/interfaces'
 
 export default function Post(props: { post: Post }) {
   const { post } = props
@@ -36,21 +37,6 @@ export default function Post(props: { post: Post }) {
       </Grid>
     </PostLayout>
   )
-}
-
-interface Post {
-  title: string
-  slug: string
-  content: string
-  user: {
-    firstName: string
-    lastName: string
-  }
-  summary: string
-  published: boolean
-  createAt: Date
-  updateAt: Date
-  publishedAt: Date
 }
 
 export const getStaticPaths = async () => {
