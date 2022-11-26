@@ -1,21 +1,26 @@
-import PostLayout from '../../src/components/layouts/PostLayout'
+import PostLayout from '../../components/layouts/PostLayout'
 import { Typography, TextField, Box, Button } from '@mui/material'
-import QuillTextField from '../../src/components/TextField/QuillTextField'
+import QuillTextField from '../../components/TextField/QuillTextField'
 import { DateTimePicker } from '@mui/x-date-pickers'
 import React, { SetStateAction, Dispatch, useEffect } from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import axios from 'axios'
 import ReactQuill, { Quill } from 'react-quill'
-import { parseCookies } from 'src/utils/helper.js'
+import { parseCookies } from 'src/utils/helper'
 import { EventHandler } from 'react'
 import AuthorizationWrapper from 'src/components/Wrapper/AuthorizationWrapper'
 import { NextRequest, NextResponse } from 'next/server'
+import { Radio } from '@mui/material'
+import { Checkbox } from '@mui/material'
+import { FormControlLabel } from '@mui/material'
 
 function SideBarContent(props: {
   slug: string
   summary: string
+  isPublish: boolean
   setSlug: React.Dispatch<React.SetStateAction<string>>
   setSummary: React.Dispatch<React.SetStateAction<string>>
+  setPublish: React.Dispatch<React.SetStateAction<boolean>>
   handleSubmit: () => void
 }) {
   const [value, setValue] = React.useState<Dayjs | null>(
@@ -33,6 +38,8 @@ function SideBarContent(props: {
         label="Summary"
         id="fullWidth"
         value={props.summary}
+        multiline
+        rows={4}
         onChange={(e) => {
           props.setSummary(e.target.value)
         }}
@@ -54,8 +61,13 @@ function SideBarContent(props: {
         value={value}
         onChange={handleChange}
         renderInput={(params) => (
-          <TextField {...params} sx={{ mb: 2 }} fullWidth />
+          <TextField {...params} sx={{ mb: 2 }} fullWidth size="small" />
         )}
+      />
+      <FormControlLabel
+        control={<Checkbox />}
+        onChange={() => props.setPublish(!props.isPublish)}
+        label="Publish"
       />
       <Button
         fullWidth
@@ -69,13 +81,21 @@ function SideBarContent(props: {
 }
 
 export default function PostCreate(props: { authorization: string }) {
-  const {authorization} = props
+  const { authorization } = props
   const [title, setTitle] = React.useState<string>('')
   const [content, setContent] = React.useState<string>('')
   const [summary, setSummary] = React.useState<string>('')
   const [slug, setSlug] = React.useState<string>('')
+  const [isPublish, setPublish] = React.useState<boolean>(false)
 
   const handleSubmit = () => {
+    console.log({
+      title: title,
+      content: content,
+      summary: summary,
+      slug: slug,
+      published: isPublish,
+    })
     axios
       .post(
         'http://localhost:3000/posts/create',
@@ -84,6 +104,7 @@ export default function PostCreate(props: { authorization: string }) {
           content: content,
           summary: summary,
           slug: slug,
+          published: isPublish,
         },
         {
           headers: {
@@ -106,8 +127,10 @@ export default function PostCreate(props: { authorization: string }) {
         <SideBarContent
           slug={slug}
           summary={summary}
+          isPublish={isPublish}
           setSummary={setSummary}
           setSlug={setSlug}
+          setPublish={setPublish}
           handleSubmit={handleSubmit}
         />
       }
@@ -116,6 +139,8 @@ export default function PostCreate(props: { authorization: string }) {
         fullWidth
         label="Title"
         id="fullWidth"
+        multiline
+        rows={2}
         value={title}
         onChange={(e) => {
           setTitle(e.target.value)
@@ -135,10 +160,7 @@ export default function PostCreate(props: { authorization: string }) {
   )
 }
 
-PostCreate.getInitialProps = async (context: {
-  req: any
-  res: any
-}) => {
+PostCreate.getInitialProps = async (context: { req: any; res: any }) => {
   const { req, res } = context
   const data = parseCookies(req)
   if (res) {

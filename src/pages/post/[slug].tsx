@@ -1,7 +1,7 @@
 import { Box, Grid, Typography, Avatar } from '@mui/material'
 import { GetStaticProps } from 'next'
-import PostLayout from '../../src/components/layouts/PostLayout'
-import NavigationBar from '../../src/components/NavigationBar'
+import PostLayout from '../../components/layouts/PostLayout'
+import NavigationBar from '../../components/NavigationBar'
 import axios from 'axios'
 import Parser from 'html-react-parser'
 

@@ -40,9 +40,9 @@ export default function Login() {
           maxAge: 3600, // Expires after 1hr
           sameSite: true,
         })
-        const prevUrl = cookie?.prevUrl
+        const prevUrl = cookie?.prevUrl || '/posts'
         removeCookie('prevUrl')
-        return router.push(prevUrl || '/posts')
+        return router.push(prevUrl)
       })
       .catch(function (error) {
         console.error(error)

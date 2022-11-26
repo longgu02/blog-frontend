@@ -14,7 +14,7 @@ export default async function middleware(req: NextRequest) {
   const loginUrl = req.nextUrl.clone()
   loginUrl.pathname = '/auth/login'
 
-  if (url.includes('/post/create')) {
+  if (url.includes('/post/write')) {
     if (jwt === undefined) {
       // dispatch(setPrevUrl(url))
       const loginRes = NextResponse.redirect(loginUrl)
@@ -41,5 +41,5 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: '/post/create',
+  matcher: '/post/write',
 }

@@ -34,17 +34,15 @@ export default function Sidebar(props: {
             sx={{ flexWrap: 'wrap', display: 'flex', justifyContent: 'end' }}
           >
             <Hidden lgDown>
-              {/* <Link  sx={{display: 'flex', mt: 'auto', mb: 'auto' }}> */}
-              <IconButton sx={{ mt: 'auto', mb: 'auto' }} href="/post/create">
+              {/* <IconButton sx={{ mt: 'auto', mb: 'auto' }} href="/post/create">
                 <CreateOutlinedIcon />
               </IconButton>
-              {/* </Link> */}
               <IconButton sx={{ mt: 'auto', mb: 'auto' }}>
                 <DashboardOutlinedIcon />
               </IconButton>
               <IconButton sx={{ mt: 'auto', mb: 'auto' }}>
                 <NotificationsNoneIcon />
-              </IconButton>
+              </IconButton> */}
               <IconButton sx={{ mt: 'auto', mb: 'auto' }}>
                 <SettingsOutlinedIcon />
               </IconButton>
