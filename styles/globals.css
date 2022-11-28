@@ -2,12 +2,12 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'babapro';
+  font-family: 'text-medium';
 }
 
 @font-face {
-  font-family: 'babapro';
-  src: url('../public/fonts/BabaPro-Bold.woff') format('woff');
+  font-family: 'text-medium';
+  src: url('../public/fonts/Text-Medium.woff') format('woff');
   font-weight: bold;
   font-style: normal;
   font-display: swap;

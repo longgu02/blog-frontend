@@ -1,15 +1,63 @@
-import { Box, Grid, Typography, Avatar } from '@mui/material'
+import { Box, Grid, Typography, Avatar, Paper } from '@mui/material'
 import { GetStaticProps } from 'next'
 import PostLayout from '../../components/layouts/PostLayout'
 import NavigationBar from '../../components/NavigationBar'
 import axios from 'axios'
 import Parser from 'html-react-parser'
 import { Post } from 'src/constant/interfaces'
+import { BlogClient } from 'src/services/clientRequest'
+import Image from 'next/image'
 
-export default function Post(props: { post: Post }) {
-  const { post } = props
+function SidebarContent(props: { posts: Array<Post> }) {
+  const { posts } = props
+  const testImg =
+    'https://images.pexels.com/photos/1519088/pexels-photo-1519088.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
   return (
-    <PostLayout enableToggle={false}>
+    <Box>
+      {posts.map((post) => (
+        <Box key={post._id} sx={{ mb: 3 }}>
+          <Paper
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              borderRadius: 0,
+            }}
+            elevation={1}
+          >
+            <Image
+              src={testImg}
+              alt="thumbnail"
+              width={125}
+              height={90}
+            ></Image>
+            <Box sx={{ padding: 1 }}>
+              <Typography
+                sx={{
+                  maxWidth: 180,
+                  textAlign: 'right',
+                  fontSize: '17px',
+                  fontWeight: 'bold',
+                }}
+              >{`${post.title.slice(0, 25)}...`}</Typography>
+            </Box>
+          </Paper>
+        </Box>
+      ))}
+    </Box>
+  )
+}
+
+export default function PostBySlug(props: {
+  post: Post
+  relatedPosts: Array<Post>
+}) {
+  const { post, relatedPosts } = props
+  return (
+    <PostLayout
+      enableToggle={false}
+      sideBarContent={<SidebarContent posts={relatedPosts} />}
+    >
       <Grid container columnSpacing={4}>
         <Grid item xs={3}>
           <h1>Outline</h1>
@@ -40,11 +88,11 @@ export default function Post(props: { post: Post }) {
 }
 
 export const getStaticPaths = async () => {
-  const _promise: any = await fetch('http://localhost:3000/posts')
-  const posts = await _promise.json()
+  const Client = BlogClient
+  const posts: { data: Array<Post> } = await Client.get('/posts')
   const paths = posts.data.map((post: Post) => ({
     params: {
-      slug: post.slug,
+      slug: post.slug.toString(),
     },
   }))
   return {
@@ -58,10 +106,9 @@ interface params {
 }
 
 export const getStaticProps = async (props: { params: params }) => {
-  const _promise: any = await fetch(
-    `http://localhost:3000/posts/${props.params?.slug}`
-  )
-  const post = await _promise.json()
+  const Client = BlogClient
+  const post: { data: Post } = await Client.get(`/posts/${props.params?.slug}`)
+  const relatedPosts: { data: Post } = await Client.get(`/posts`)
   if (!post.data) {
     return {
       notFound: true,
@@ -70,6 +117,7 @@ export const getStaticProps = async (props: { params: params }) => {
   return {
     props: {
       post: post.data,
+      relatedPosts: relatedPosts.data,
     },
   }
 }

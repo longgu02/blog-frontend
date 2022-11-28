@@ -24,12 +24,10 @@ export default function Sidebar(props: {
           <Box
             sx={{ flexWrap: 'wrap', display: 'flex', justifyContent: 'end' }}
           >
-            <Hidden lgDown>
-              <IconButton sx={{ mt: 'auto', mb: 'auto' }}>
-                <SettingsOutlinedIcon />
-              </IconButton>
-            </Hidden>
             <LoginButton sx={{ display: 'flex', justifyContent: 'end' }} />
+            <IconButton sx={{ mt: 'auto', mb: 'auto' }}>
+              <SettingsOutlinedIcon />
+            </IconButton>
           </Box>
           <Container maxWidth={'md'}>{props.children}</Container>
         </Box>

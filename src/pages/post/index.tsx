@@ -3,9 +3,9 @@ import { Container } from '@mui/system'
 import PostPreview from 'src/components/Post/PostPreview'
 import NavigationBar from '../../components/NavigationBar'
 import { Post } from 'src/constant/interfaces'
+import { BlogClient } from 'src/services/clientRequest'
 
-
-export default function Post(props: { posts: { data: Array<Post> } }) {
+export default function Posts(props: { posts: { data: Array<Post> } }) {
   const { posts } = props
   return (
     <Box>
@@ -24,8 +24,8 @@ export default function Post(props: { posts: { data: Array<Post> } }) {
 }
 
 export const getStaticProps = async () => {
-  const _promise = await fetch('http://localhost:3000/posts')
-  const posts = await _promise.json()
+  const Client = BlogClient
+  const posts = await Client.get('/posts')
   return {
     props: {
       posts: posts,

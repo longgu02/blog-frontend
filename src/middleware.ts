@@ -10,31 +10,27 @@ export default async function middleware(req: NextRequest) {
   const jwt = cookies.get('user')?.value
   const url = req.url
   await cookies.set('prevUrl', url)
-  // const dispatch = useDispatch()
   const loginUrl = req.nextUrl.clone()
   loginUrl.pathname = '/auth/login'
 
   if (url.includes('/post/write')) {
     if (jwt === undefined) {
-      // dispatch(setPrevUrl(url))
       const loginRes = NextResponse.redirect(loginUrl)
       loginRes.cookies.set('prevUrl', url)
       return loginRes
     }
-
-    try {
-      axios.get('http://localhost:3000/auth/get-user', {
-        headers: {
-          authorization: jwt,
-        },
-      })
-      return NextResponse.next()
-    } catch (err) {
-      // dispatch(setPrevUrl(url))
-      const loginRes = NextResponse.redirect(loginUrl)
-      loginRes.cookies.set('prevUrl', url)
-      return loginRes
-    }
+  //   try {
+  //     axios.get('http://localhost:3000/auth/get-user', {
+  //       headers: {
+  //         authorization: jwt,
+  //       },
+  //     })
+  //     return NextResponse.next()
+  //   } catch (err) {
+  //     const loginRes = NextResponse.redirect(loginUrl)
+  //     loginRes.cookies.set('prevUrl', url)
+  //     return loginRes
+  //   }
   }
 
   return NextResponse.next()

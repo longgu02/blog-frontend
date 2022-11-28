@@ -10,6 +10,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { CookiesProvider } from 'react-cookie'
 import { store } from 'src/redux/store'
 import { Provider } from 'react-redux'
+import { SnackbarProvider } from 'notistack'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -29,7 +30,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <CookiesProvider>
             <Provider store={store}>
-              <Component {...pageProps} />
+              <SnackbarProvider>
+                <Component {...pageProps} />
+              </SnackbarProvider>
             </Provider>
           </CookiesProvider>
         </LocalizationProvider>

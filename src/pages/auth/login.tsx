@@ -1,52 +1,47 @@
 import * as React from 'react'
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import Paper from '@mui/material/Paper'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import Link from '@mui/material/Link'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
+import {
+  Avatar,
+  Button,
+  Paper,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
 import { useCookies } from 'react-cookie'
-import axios from 'axios'
 import { useRouter } from 'next/router'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { RootState } from 'src/redux/store'
+import useNotify from 'src/hooks/useNotify'
+import { AuthClient } from 'src/services/clientRequest'
+import { useAuthToken } from 'src/hooks/useAuthToken'
 
 export default function Login() {
   const [cookie, setCookie, removeCookie] = useCookies(['user', 'prevUrl'])
-
+  const [setJwt, setRefreshToken, _jwt, _refreshToken] = useAuthToken()
+  const { errorNotify } = useNotify()
+  const Client = AuthClient
   const prevUrl = useSelector((state: RootState) => state.url.prevUrl)
   const router = useRouter()
-  const handleSignIn = (event: React.FormEvent<HTMLFormElement>) => {
+
+  const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
-    axios
-      .post('http://localhost:3000/auth/login', {
-        username: data.get('username'),
-        password: data.get('password'),
-      })
-      .then(function (response: {
-        data: {
-          jwt: string
-        }
-      }) {
-        setCookie('user', response.data['jwt'], {
-          path: '/',
-          maxAge: 3600, // Expires after 1hr
-          sameSite: true,
-        })
-        const prevUrl = cookie?.prevUrl || '/posts'
-        removeCookie('prevUrl')
-        return router.push(prevUrl)
-      })
-      .catch(function (error) {
-        console.error(error)
-      })
+    const res = await AuthClient.post('/login', {
+      username: data.get('username'),
+      password: data.get('password'),
+    }).catch((err) => errorNotify(err.message))
+
+    setJwt(res.jwt)
+    setRefreshToken(res.refreshToken)
+    const prevUrl = cookie?.prevUrl || '/post'
+    removeCookie('prevUrl')
+    return router.push(prevUrl)
   }
   return (
     <Container component="main" maxWidth="xs">

@@ -99,7 +99,7 @@ export default function LoginButton(props: { sx?: SxProps<Theme> }) {
           <IconButton sx={{ mt: 'auto', mb: 'auto' }}>
             <NotificationsNoneIcon />
           </IconButton>
-          <Box sx={{ mr: 2, mt: '3px', ml: 1 }}>
+          <Box sx={{ mr: 1, mt: '3px', ml: 1 }}>
             <HtmlTooltip
               title={
                 <React.Fragment>

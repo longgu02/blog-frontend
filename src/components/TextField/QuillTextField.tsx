@@ -1,10 +1,5 @@
 import dynamic from 'next/dynamic'
-import { Dispatch, SetStateAction } from 'react'
-
-const QuillNoSSRWrapper = dynamic(import('react-quill'), {
-  ssr: false,
-  loading: () => <p>Loading ...</p>,
-})
+import { Dispatch, SetStateAction, useMemo } from 'react'
 
 const modules = {
   toolbar: [
@@ -51,6 +46,10 @@ export default function QuillTextField(props: {
   value: string
   setValue: Dispatch<SetStateAction<string>>
 }) {
+  const QuillNoSSRWrapper = useMemo(
+    () => dynamic(() => import('react-quill'), { ssr: false }),
+    []
+  )
   return (
     <QuillNoSSRWrapper
       modules={modules}

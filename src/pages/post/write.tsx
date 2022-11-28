@@ -13,6 +13,8 @@ import React from 'react'
 import dayjs, { Dayjs } from 'dayjs'
 import axios from 'axios'
 import { parseCookies } from 'src/utils/helper'
+import { useAuthClient } from 'src/hooks/useAuthClient'
+import useNotify from 'src/hooks/useNotify'
 
 function SideBarContent(props: {
   slug: string
@@ -82,45 +84,28 @@ function SideBarContent(props: {
 
 export default function PostCreate(props: { authorization: string }) {
   const { authorization } = props
+  const { errorNotify } = useNotify()
   const [title, setTitle] = React.useState<string>('')
   const [content, setContent] = React.useState<string>('')
   const [summary, setSummary] = React.useState<string>('')
   const [slug, setSlug] = React.useState<string>('')
   const [isPublish, setPublish] = React.useState<boolean>(false)
+  const Client = useAuthClient()
 
-  const handleSubmit = () => {
-    console.log({
-      title: title,
-      content: content,
-      summary: summary,
-      slug: slug,
-      published: isPublish,
-    })
-    axios
-      .post(
-        'http://localhost:3000/posts/create',
-        {
-          title: title,
-          content: content,
-          summary: summary,
-          slug: slug,
-          published: isPublish,
-        },
-        {
-          headers: {
-            authorization: authorization,
-          },
-        }
-      )
-      .then(function (response) {
-        console.log(response)
-      })
-      .catch(function (error) {
-        console.error(error)
-      })
+  const handleSubmit = async () => {
+    if (Client) {
+      await Client.post('/posts/create', {
+        title: title,
+        content: content,
+        summary: summary,
+        slug: slug,
+        published: isPublish,
+      }).catch((err) => errorNotify(err.message))
+    } else {
+      errorNotify('Error: Session expired, please re-login')
+    }
   }
   return (
-    // <AuthorizationWrapper authorization={authorization}>
     <PostLayout
       enableToggle={false}
       sideBarContent={
@@ -156,7 +141,6 @@ export default function PostCreate(props: { authorization: string }) {
         setValue={setContent}
       />
     </PostLayout>
-    // </AuthorizationWrapper>
   )
 }
 
