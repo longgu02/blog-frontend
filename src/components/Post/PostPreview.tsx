@@ -1,4 +1,4 @@
-import { Typography, Paper, Box } from '@mui/material'
+import { Typography, Paper, Box, Avatar } from '@mui/material'
 import Image from 'next/image'
 
 interface Post {
@@ -32,16 +32,20 @@ export default function PostPreview(props: { key: Post['_id']; post: Post }) {
         justifyContent: 'space-between',
       }}
     >
-      <Box sx={{ pr: 1 }}>
+      <Box sx={{ pr: 1, pl: 2 }}>
         <Typography
           variant="subtitle1"
-          sx={{ maxWidth: '400px', fontWeight: 'bold' }}
+          sx={{ maxWidth: '350px', fontWeight: 'bold', pb: 1 }}
         >
           {post.title}
         </Typography>
-        <Typography variant="subtitle1" sx={{ maxWidth: '400px' }}>
+        <Typography
+          variant="body1"
+          sx={{ maxWidth: '400px', color: '	#A9A9A9', fontWeight: 'bold' }}
+        >
           {post.summary}
         </Typography>
+        <Avatar sx={{}} />
       </Box>
       <Image
         src={testImg}
